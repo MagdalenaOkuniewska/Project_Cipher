@@ -10,40 +10,38 @@ class Buffer:
 
     def __str__(self):
         if not self.storage:
-            return 'Buffer empty'
+            return "Buffer empty"
 
-        buffer_content = '\n'.join(str(text) for text in self.storage)
-        return f'Buffer content:\n{buffer_content}'
+        buffer_content = "\n".join(str(text) for text in self.storage)
+        return f"Buffer content:\n{buffer_content}"
 
-    def add_encrypted(self, content:str, rot_type:str) -> None:
+    def add_encrypted(self, content: str, rot_type: str) -> None:
         """Add an encrypted text to the buffer."""
 
-        text = Text(content = content, rot_type = rot_type, status = 'encrypted')
+        text = Text(content=content, rot_type=rot_type, status="encrypted")
         self.storage.append(text)
 
-    def add_decrypted(self, content:str, rot_type:str) -> None:
+    def add_decrypted(self, content: str, rot_type: str) -> None:
         """Add a decrypted text to the buffer."""
 
-        text = Text(content=content, rot_type=rot_type, status='decrypted')
+        text = Text(content=content, rot_type=rot_type, status="decrypted")
         self.storage.append(text)
-
 
     def clear_all(self):
         """Clear the buffer."""
 
         self.storage.clear()
 
-
     def display(self):
         """Display the content of the buffer."""
 
         if not self.storage:
-            print('Buffer empty')
+            print("Buffer empty")
             return
 
-        print('Buffer content:')
+        print("Buffer content:")
         for i, item in enumerate(self.storage, 1):
-            print(f'{i}. ROT:[{item.rot_type}], STATUS[{item.status}]: {item.content}')
+            print(f"{i}. ROT:[{item.rot_type}], STATUS[{item.status}]: {item.content}")
 
 
 # buffer = Buffer()

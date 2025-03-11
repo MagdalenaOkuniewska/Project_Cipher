@@ -8,3 +8,10 @@ class Text:
     content: str
     rot_type: str
     status: str
+
+    def to_dict(self):
+        return {
+            "content": self.content,
+            "rot_type": self.rot_type,
+            "status": self.status,
+        }

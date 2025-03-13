@@ -60,3 +60,4 @@ class FileHandler:
 
         except FileNotFoundError:
             print(f"File {filename} not found.")
+        # except json.decoder.JSONDecodeError:

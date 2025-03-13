@@ -1,18 +1,21 @@
 import json
 from buffer.buffer import Buffer
+from buffer.cls_txt import Text
 
 
 class FileHandler:
     """Handle file operations (save and load) for Buffer data in JSON format."""
 
     @staticmethod
-    def buffer_to_dict(buffer: Buffer):
+    def buffer_to_dict(buffer: Buffer) -> list:
         """Convert buffer storage to a list of dictionaries for JSON format."""
-        return [text.to_dict() for text in buffer.storage]
+
+        list_of_dicts = [text.to_dict() for text in buffer.storage]
+        return list_of_dicts
 
     @staticmethod
     def get_filename(filename: str | None) -> str:
-        """Get filename from user input if not provided, and ensure it has a .json extension."""
+        """Get filename from user input and ensure it has a .json extension."""
 
         if filename is None:
             filename = input("Enter a filename: ")
@@ -34,7 +37,7 @@ class FileHandler:
             mode = "a"
 
         try:
-            with open(filename, mode) as outfile:
+            with open(filename, mode, encoding="utf-8") as outfile:
                 json.dump(data_to_save, outfile, indent=4)
                 outfile.write("\n")
             print(f"Data successfully saved to {filename}")
@@ -42,6 +45,18 @@ class FileHandler:
             print(f"File {filename} not found.")
 
     @staticmethod
-    def load_from_file(buffer: Buffer, filename: str):
+    def load_from_file(buffer: Buffer, filename: str) -> None:
         """Load data from file to the buffer."""
-        pass
+
+        filename = FileHandler.get_filename(filename)
+
+        try:
+            with open(filename, mode="r", encoding="utf-8") as infile:
+                data_to_load = json.load(infile)
+
+                for item in data_to_load:
+                    data = Text.from_dict(item)
+                    buffer.storage.append(data)
+
+        except FileNotFoundError:
+            print(f"File {filename} not found.")

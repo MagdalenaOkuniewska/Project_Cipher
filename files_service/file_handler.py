@@ -1,16 +1,16 @@
+from dataclasses import asdict
 import json
 from buffer.buffer import Buffer
-from buffer.cls_txt import Text
 
 
 class FileHandler:
     """Handle file operations (save and load) for Buffer data in JSON format."""
 
     @staticmethod
-    def buffer_to_dict(buffer: Buffer) -> list:
+    def buffer_to_dict(buffer: Buffer) -> list[dict[str, str]]:
         """Convert buffer storage to a list of dictionaries for JSON format."""
 
-        list_of_dicts = [text.to_dict() for text in buffer.storage]
+        list_of_dicts = [asdict(text) for text in buffer.storage]
         return list_of_dicts
 
     @staticmethod
@@ -54,10 +54,9 @@ class FileHandler:
             with open(filename, mode="r", encoding="utf-8") as infile:
                 data_to_load = json.load(infile)
 
-                for item in data_to_load:
-                    data = Text.from_dict(item)
-                    buffer.storage.append(data)
+                buffer.add_bulk(data_to_load)
 
         except FileNotFoundError:
             print(f"File {filename} not found.")
-        # except json.decoder.JSONDecodeError:
+        except json.decoder.JSONDecodeError:
+            print(f"File {filename} is not valid JSON.")

@@ -1,5 +1,5 @@
 from typing import List
-from cls_txt import Text
+from text import Text
 
 
 class Buffer:
@@ -15,17 +15,18 @@ class Buffer:
         buffer_content = "\n".join(str(text) for text in self.storage)
         return f"Buffer content:\n{buffer_content}"
 
-    def add_encrypted(self, content: str, rot_type: str) -> None:
-        """Add an encrypted text to the buffer."""
+    def add(self, content: str, rot_type: str, status: str) -> None:
+        """Add the text to the buffer with specified status."""
 
-        text = Text(content=content, rot_type=rot_type, status="encrypted")
+        text = Text(content=content, rot_type=rot_type, status=status)
         self.storage.append(text)
 
-    def add_decrypted(self, content: str, rot_type: str) -> None:
-        """Add a decrypted text to the buffer."""
+    def add_bulk(self, data: list[dict[str, str]]) -> None:
+        """Add multiple texts to the buffer from a list of dictionaries."""
 
-        text = Text(content=content, rot_type=rot_type, status="decrypted")
-        self.storage.append(text)
+        for item in data:
+            data = Text(**item)
+            self.storage.append(data)
 
     def clear_all(self):
         """Clear the buffer."""
@@ -42,11 +43,3 @@ class Buffer:
         print("Buffer content:")
         for i, item in enumerate(self.storage, 1):
             print(f"{i}. ROT:[{item.rot_type}], STATUS[{item.status}]: {item.content}")
-
-
-# buffer = Buffer()
-# buffer.add_encrypted(rot_type='rot13', content='sdf5f2')
-# buffer.add_decrypted(rot_type='rot47', content='Testowa zawartość II')
-# buffer.display()
-# buffer.clear_all()
-# buffer.display()

@@ -44,9 +44,29 @@ class Manager:
         except Exception as e:
             print(f"Error during encryption: {str(e)}")
 
-    # def decrypt_text(self):
-    #     pass
-    #
+    def decrypt_text(self):
+        """Handle decryption and stores in a buffer."""
+
+        print("\n=== Decrypt text ===")
+
+        text = input("Enter text to decrypt: ")
+        cipher_type = input("Enter the cipher type: ")
+
+        try:
+            cipher = self.cipher_facade.check_cipher_type(cipher_type)
+            decrypted_text = cipher.decrypt(text)
+            self.buffer.add(
+                content=decrypted_text, rot_type=cipher_type, status="decrypted"
+            )
+
+            print(f"Text decrypted successfully: {decrypted_text}")
+            print("Added to buffer with status 'decrypted'")
+
+        except CipherNotFoundError as e:
+            print(f"Cipher error: {str(e)}")
+        except Exception as e:
+            print(f"Error during decryption: {str(e)}")
+
     # def display_buffer(self):
     #     pass
     #

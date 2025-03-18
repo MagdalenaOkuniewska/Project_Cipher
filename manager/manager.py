@@ -67,20 +67,42 @@ class Manager:
         except Exception as e:
             print(f"Error during decryption: {str(e)}")
 
-    # def display_buffer(self):
-    #     pass
-    #
-    # def clear_buffer(self):
-    #     pass
-    #
-    # def save_to_file(self):
-    #     pass
-    #
-    # def load_from_file(self):
-    #     pass
-    #
-    # def exit_program(self):
-    #     pass
-    #
-    # def menu_choice(self):
-    #     pass
+    def display_buffer(self):
+        """Display current buffer content"""
+
+        print("\n=== Buffer content ===")
+        self.buffer.display()
+
+    def clear_buffer(self):
+        """Clears current buffer content"""
+
+        self.buffer.clear_all()
+        print("Buffer content cleared")
+
+
+    def save_to_file(self):
+        """Save current buffer content to a JSON file"""
+        pass
+
+    def load_from_file(self):
+        """Load data from JSON file to a buffer"""
+        pass
+
+    def exit_program(self):
+        """Exit the application."""
+
+        print("\nExiting application. Goodbye!")
+        exit()
+
+    def menu_choice(self):
+        """Map the menu choice to the appropriate function."""
+
+        actions = {
+            1: self.encrypt_text,
+            2: self.decrypt_text,
+            3: self.display_buffer,
+            4: self.clear_buffer,
+            5: self.save_to_file,
+            6: self.load_from_file,
+            7: self.exit_program
+        }

@@ -15,6 +15,7 @@ class Manager:
         file_handler: FileHandler,
         menu: MainMenu,
     ) -> None:
+
         self.cipher_facade = cipher_facade
         self.buffer = buffer
         self.file_handler = file_handler

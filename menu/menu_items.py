@@ -17,6 +17,8 @@ class MainMenu(Menu):
         return [
             "Encrypt text",
             "Decrypt text",
+            "Display buffer",
+            "Clear buffer",
             "Save to JSON file",
             "Load from JSON file",
             "Exit",
@@ -30,7 +32,6 @@ class MainMenu(Menu):
 
     def get_choice(self) -> int:
         """Get and validate user menu choice."""
-
         while True:
             try:
                 choice = int(input("Please provide a menu choice (number): "))

@@ -2,6 +2,7 @@ from cipher.cipher import CipherFacade, CipherNotFoundError
 from buffer.buffer import Buffer
 from files_service.file_handler import FileHandler
 from menu.menu_items import MainMenu
+from settings import DEBUG
 
 
 class Manager:
@@ -20,52 +21,60 @@ class Manager:
         self.buffer = buffer
         self.file_handler = file_handler
         self.menu = menu
+        self.is_running = True
+
+    @property
+    def actions(self):
+        return {
+            1: self.encrypt_text,
+            2: self.decrypt_text,
+            3: self.display_buffer,
+            4: self.clear_buffer,
+            5: self.save_to_file,
+            6: self.load_from_file,
+            7: self.exit_program,
+        }
 
     def encrypt_text(self):
         """Handle encryption and stores in a buffer."""
-
-        print("\n=== Encrypt text ===")
-
-        text: str = input("Enter text to encrypt: ")
-        cipher_type: str = input("Enter the cipher type: ")
-
-        try:
-            cipher = self.cipher_facade.check_cipher_type(cipher_type)
-            encrypted_text = cipher.encrypt(text)
-            self.buffer.add(
-                content=encrypted_text, rot_type=cipher_type, status="encrypted"
-            )
-
-            print(f"Text encrypted successfully: {encrypted_text}")
-            print("Added to buffer with status 'encrypted'")
-
-        except CipherNotFoundError as e:
-            print(f"Cipher error: {str(e)}")
-        except Exception as e:
-            print(f"Error during encryption: {str(e)}")
+        self.__make_cipher_operation(operation_type="encrypt")
 
     def decrypt_text(self):
         """Handle decryption and stores in a buffer."""
+        self.__make_cipher_operation(operation_type="decrypt")
 
-        print("\n=== Decrypt text ===")
+    def __make_cipher_operation(self, operation_type: str):
+        """Helper method to perform encryption or decryption."""
 
-        text: str = input("Enter text to decrypt: ")
+        print(f"\n=== {operation_type.title()} text ===")
+
+        text: str = input(f"Enter text to {operation_type}: ")
         cipher_type: str = input("Enter the cipher type: ")
 
         try:
             cipher = self.cipher_facade.check_cipher_type(cipher_type)
-            decrypted_text = cipher.decrypt(text)
-            self.buffer.add(
-                content=decrypted_text, rot_type=cipher_type, status="decrypted"
-            )
 
-            print(f"Text decrypted successfully: {decrypted_text}")
-            print("Added to buffer with status 'decrypted'")
+            if operation_type == "decrypt":
+                text = cipher.decrypt(text)
+                status = "decrypted"
+            elif operation_type == "encrypt":
+                text = cipher.encrypt(text)
+                status = "encrypted"
+            else:
+                print(f"Invalid operation type: {operation_type}")
+                return
+
+            self.buffer.add(content=text, rot_type=cipher_type, status=status)
+
+            print(f"Text {operation_type}ed successfully: {text}")
+            print(f"Added to buffer with status '{status}'")
 
         except CipherNotFoundError as e:
             print(f"Cipher error: {str(e)}")
         except Exception as e:
-            print(f"Error during decryption: {str(e)}")
+            if DEBUG:
+                print(f"Error: {e}")
+            print(f"Error during {operation_type} operation try again.")
 
     def display_buffer(self):
         """Display current buffer content"""
@@ -114,26 +123,17 @@ class Manager:
         """Exit the application."""
 
         print("\nExiting application. Goodbye!")
-        exit()
+        self.is_running = False
 
-    def menu_choice(self):
+    def run(self):
         """Map the menu choice to the appropriate function."""
 
-        self.menu.display_menu()
+        while self.is_running:
+            self.menu.display_menu()
 
-        choice = self.menu.get_choice()
+            choice = self.menu.get_choice()
 
-        actions = {
-            1: self.encrypt_text,
-            2: self.decrypt_text,
-            3: self.display_buffer,
-            4: self.clear_buffer,
-            5: self.save_to_file,
-            6: self.load_from_file,
-            7: self.exit_program,
-        }
-
-        if choice in actions:
-            return actions[choice]()
-        else:
-            print(f"Invalid choice: {choice}")
+            if choice in self.actions:
+                return self.actions[choice]()
+            else:
+                print(f"Invalid choice: {choice}")

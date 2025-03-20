@@ -134,6 +134,6 @@ class Manager:
             choice = self.menu.get_choice()
 
             if choice in self.actions:
-                return self.actions[choice]()
+                self.actions[choice]()
             else:
                 print(f"Invalid choice: {choice}")

@@ -1,5 +1,5 @@
 from typing import List
-from text import Text
+from .text import Text
 
 
 class Buffer:

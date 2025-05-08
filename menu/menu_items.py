@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 
 class Menu(ABC):
 
-    @abstractmethod
     @property
+    @abstractmethod
     def menu_items(self):
         pass
 
@@ -41,3 +41,4 @@ class MainMenu(Menu):
                     print(f"Please enter a number between 1 and {len(self.menu_items)}")
             except ValueError:
                 print("Please enter a valid number")
+

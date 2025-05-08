@@ -38,8 +38,7 @@ class FileHandler:
 
         try:
             with open(filename, mode, encoding="utf-8") as outfile:
-                json.dump(data_to_save, outfile, indent=4)
-                outfile.write("\n")
+                json.dump({'data': data_to_save}, outfile, indent=4)
             print(f"Data successfully saved to {filename}")
         except FileNotFoundError:
             print(f"File {filename} not found.")

@@ -55,7 +55,12 @@ The tests verify the correct functionality of both ROT13 and ROT47 implementatio
 <details>
 <summary>Click here to see the example usage of <b>Project Cipher</b>!</summary><br>
 The project uses a facade pattern to provide a simple interface for different cipher implementations.<br>
-Currently, it supports ROT13 and ROT47 variants of the Caesar cipher.<br>
+Currently, it supports ROT13 and ROT47 variants of the Caesar cipher.<br><br>
+You can run the application directly using the `main.py` file:<br>
+
+```python main.py```<br>
+By default, the script will prompt you to choose a cipher type and enter the text to encrypt or decrypt.
+
 <h3>Basic Usage with CipherFacade</h3>
   
 ```
